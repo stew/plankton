@@ -14,14 +14,15 @@ flags added to [Typelevel scala](http://typelevel.org/scala/). See [this pull re
 You will need specify in your `build.sbt` that you want the typelevel
 compiler instead of the lightbend compiler:
 
-	scalaOrganization in ThisBuild := "org.typelevel",
-	scalaVersion in ThisBuild := "2.12.1",
+    scalaOrganization in ThisBuild := "org.typelevel",
+    scalaVersion in ThisBuild := "2.12.1",
 
 You will need to add plankton as a dependency:
 
-	libraryDependencies += "org.typelevel" %% "plankton" % "0.0.1-SNAPSHOT"
+    resolvers += Resolver.bintrayRepo("stew", "plankton")
+    libraryDependencies += "stew.github.io" %% "phyto" % "0.0.1"
 	
 And you'll need to add the approriate `-Ypredef` and `-Ysysdef` options to scalac:
 
-	scalacOptions ++= Seq("-Ysysdef", "_",
+    scalacOptions ++= Seq("-Ysysdef", "_",
                           "-Ypredef", "plankton.Phyto._")
