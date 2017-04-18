@@ -51,7 +51,7 @@ lazy val noPublishSettings = Seq(
   publishArtifact := false
 )
 
-lazy val palnkton = project.in(file("."))
+lazy val plankton = project.in(file("."))
   .settings(noPublishSettings)
   .aggregate(phyto, zoo, docs)
 
