@@ -3,10 +3,13 @@ lazy val phyto = project
   .settings(publishSettings)
   .settings(predefSettings)
 
+val catsVersion = "0.9.1-SNAPSHOT"
+
 lazy val zoo = project
   .settings(buildSettings)
   .settings(publishSettings)
   .settings(predefSettings)
+  .settings(libraryDependencies += "org.typelevel" %% "cats" % catsVersion)
 
 lazy val docs = project
   .settings(buildSettings)
@@ -14,7 +17,7 @@ lazy val docs = project
 
 lazy val buildSettings = Seq(
   scalaOrganization in ThisBuild := "org.typelevel",
-  organization in Global := "stew.github.io",
+  organization in Global := "io.github.stew",
   scalaVersion in ThisBuild := "2.12.1"
 )
 
@@ -43,7 +46,6 @@ lazy val publishSettings = Seq(
   bintrayVcsUrl := Some("git@github.com:stew/plankton.git"),
   licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
 )
-
 
 lazy val noPublishSettings = Seq(
   publish := (),

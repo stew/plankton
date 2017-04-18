@@ -85,9 +85,6 @@ object Phyto {
   // The collections rely on this method.
   implicit def $conforms[A]: A <:< A = singleton_<:<.asInstanceOf[A <:< A]
 
-  @deprecated("Use `implicitly[T <:< U]` or `identity` instead.", "2.11.0")
-  def conforms[A]: A <:< A = $conforms[A]
-
   // TYPE EQUALITY
 
   /** An instance of `A =:= B` witnesses that the types `A` and `B` are equal.

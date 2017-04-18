@@ -1,6 +1,6 @@
 package plankton
 
-object Zoo {
+object Zoo extends cats.syntax.AllSyntax {
   // Tags
   type deprecated       = scala.deprecated
   type inline           = scala.inline
@@ -32,10 +32,7 @@ object Zoo {
   type Unit                 = scala.Unit
   type StringContext        = scala.StringContext
   type Option[A]            = scala.Option[A]
-  type Some[A]              = scala.Some[A]
   type Either[A,B]          = scala.Either[A,B]
-  type Left[A,B]            = scala.Left[A,B]
-  type Right[A,B]           = scala.Right[A,B]
 
   // COMPANIONS
 
@@ -56,7 +53,61 @@ object Zoo {
   final val Left            = scala.Left
   final val Right           = scala.Right
 
+  // from cats
+  type Eval[A]    = cats.Eval[A]
+  type Eq[A]      = cats.Eq[A]
+  type Order[A]   = cats.Order[A]
+  type PartialOrder[A]   = cats.PartialOrder[A]
+
+  type Applicative[F[_]] = cats.Applicative[F]
+  type Alternative[F[_]] = cats.Alternative[F]
+  type Cartesian[F[_]] = cats.Cartesian[F]
+  type Monad[F[_]] = cats.Monad[F]
+  type Comonad[F[_]] = cats.Comonad[F]
+  type MonadCombine[F[_]] = cats.MonadCombine[F]
+  type Traverse[F[_]] = cats.Traverse[F]
+  type FlatMap[F[_]] = cats.FlatMap[F]
+  type CoflatMap[F[_]] = cats.CoflatMap[F]
+  type Foldable[F[_]] = cats.Foldable[F]
+  type Reducible[F[_]] = cats.Reducible[F]
+  type SemigroupK[F[_]] = cats.SemigroupK[F]
+  type MonoidK[F[_]] = cats.MonoidK[F]
+  type Monoid[A] = cats.Monoid[A]
+  type Semigroup[A] = cats.Semigroup[A]
+  type Show[A] = cats.Show[A]
+  type Ior[L,R] = cats.data.Ior[L,R]
+  type Validated[E,A] = cats.data.Validated[E,A]
+  type ValidatedNel[E,A] = cats.data.ValidatedNel[E,A]
+
+  val Applicative = cats.Applicative
+  val Comonad = cats.Comonad
+  val Cartesian = cats.Cartesian
+  val Monad = cats.Monad
+  val MonadCombine = cats.MonadCombine
+  val Traverse = cats.Traverse
+  val FlatMap = cats.FlatMap
+  val CoflatMap = cats.CoflatMap
+  val Foldable = cats.Foldable
+  val Reducible = cats.Reducible
+  val SemigroupK = cats.SemigroupK
+  val MonoidK = cats.MonoidK
+  val Monoid = cats.Monoid
+  val Semigroup = cats.Semigroup
+  val Validated = cats.data.Validated
+  val Show = cats.Show
+  val Ior = cats.data.Ior
+
+  final val Eval  = cats.Eval
+  final val Eq    = cats.Eq
+  final val Order = cats.Order
+  final val PartialOrder = cats.PartialOrder
+
   // SUBTYPING
+  type <~<[A,B] = cats.evidence.<~<[A,B]
+  type  As[A,B] = cats.evidence.As[A,B]
+  type ===[A,B] = cats.evidence.===[A,B]
+  type  Is[A,B] = cats.evidence.Is[A,B]
+
   /**
    * An instance of `A <:< B` witnesses that `A` is a subtype of `B`.
    * Requiring an implicit argument of the type `A <:< B` encodes
@@ -82,9 +133,6 @@ object Zoo {
   // The collections rely on this method.
   implicit def $conforms[A]: A <:< A = singleton_<:<.asInstanceOf[A <:< A]
 
-  @deprecated("Use `implicitly[T <:< U]` or `identity` instead.", "2.11.0")
-  def conforms[A]: A <:< A = $conforms[A]
-
   // TYPE EQUALITY
 
   /** An instance of `A =:= B` witnesses that the types `A` and `B` are equal.
@@ -98,8 +146,7 @@ object Zoo {
      implicit def tpEquals[A]: A =:= A = singleton_=:=.asInstanceOf[A =:= A]
   }
 
-
-  // METHODS 
+  // METHODS
 
   @inline def identity[A](a: A): A = a
 
