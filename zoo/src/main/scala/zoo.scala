@@ -33,6 +33,10 @@ object Zoo extends cats.syntax.AllSyntax {
   type StringContext        = scala.StringContext
   type Option[A]            = scala.Option[A]
   type Either[A,B]          = scala.Either[A,B]
+  type List[A]              = scala.List[A]
+  type Nel[A]               = cats.data.NonEmptyList[A]
+  type ::[A]                = scala.::[A]
+  type NonEmptyList[A]      = cats.data.NonEmptyList[A]
 
   // COMPANIONS
 
@@ -52,6 +56,13 @@ object Zoo extends cats.syntax.AllSyntax {
   final val Either          = scala.Either
   final val Left            = scala.Left
   final val Right           = scala.Right
+  final val Some            = scala.Some
+  final val None            = scala.None
+  final val List    = scala.List
+  final val Nil    = scala.Nil
+  final val NonEmptyList    = cats.data.NonEmptyList
+  final val Nel             = cats.data.NonEmptyList
+  final val ::              = scala.::
 
   // from cats
   type Eval[A]    = cats.Eval[A]

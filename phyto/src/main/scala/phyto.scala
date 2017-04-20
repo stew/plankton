@@ -58,6 +58,8 @@ object Phyto {
   final val Either          = scala.Either
   final val Left            = scala.Left
   final val Right           = scala.Right
+  final val Some            = scala.Some
+  final val None            = scala.None
 
   // SUBTYPING
   /**
