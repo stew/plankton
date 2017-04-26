@@ -4,63 +4,6 @@ package plankton
  * The leanest of the predefs offered, everything used here is immutable
  */
 object Phyto {
-  // Tags
-  type deprecated       = scala.deprecated
-  type inline           = scala.inline
-  type tailrec          = scala.annotation.tailrec
-  type transient        = scala.transient
-  type unchecked        = scala.unchecked
-  type volatile         = scala.volatile
-  type implicitNotFound = scala.annotation.implicitNotFound
-
-  // TYPES
-  type Any                  = scala.Any
-  type AnyRef               = scala.AnyRef
-  type AnyVal               = scala.AnyVal
-  type BigInt               = scala.BigInt
-  type BigDecimal           = scala.BigDecimal
-  type Boolean              = scala.Boolean
-  type Byte                 = scala.Byte
-  type Char                 = scala.Char
-  type Double               = scala.Double
-  type Float                = scala.Float
-  type Int                  = scala.Int
-  type Long                 = scala.Long
-  type Nothing              = scala.Nothing
-  type PartialFunction[A,B] = scala.PartialFunction[A,B]
-  type Product              = scala.Product
-  type Serializable         = scala.Serializable
-  type Short                = scala.Short
-  type String               = java.lang.String
-  type Unit                 = scala.Unit
-  type StringContext        = scala.StringContext
-  type Option[A]            = scala.Option[A]
-  type Some[A]              = scala.Some[A]
-  type Either[A,B]          = scala.Either[A,B]
-  type Left[A,B]            = scala.Left[A,B]
-  type Right[A,B]           = scala.Right[A,B]
-
-  // COMPANIONS
-
-  final val BigInt          = scala.BigInt
-  final val BigDecimal      = scala.BigDecimal
-  final val Boolean         = scala.Boolean
-  final val Byte            = scala.Byte
-  final val Char            = scala.Char
-  final val Double          = scala.Double
-  final val Float           = scala.Float
-  final val Int             = scala.Int
-  final val Long            = scala.Long
-  final val Short           = scala.Short
-  final val Unit            = scala.Unit
-  final val StringContext   = scala.StringContext
-  final val Option          = scala.Option
-  final val Either          = scala.Either
-  final val Left            = scala.Left
-  final val Right           = scala.Right
-  final val Some            = scala.Some
-  final val None            = scala.None
-
   // SUBTYPING
   /**
    * An instance of `A <:< B` witnesses that `A` is a subtype of `B`.
@@ -99,7 +42,6 @@ object Phyto {
   object =:= {
      implicit def tpEquals[A]: A =:= A = singleton_=:=.asInstanceOf[A =:= A]
   }
-
 
   // METHODS 
 

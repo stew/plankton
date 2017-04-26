@@ -1,22 +1,30 @@
 lazy val phyto = project
   .settings(buildSettings)
   .settings(publishSettings)
-  .settings(predefSettings)
+  .settings(List(scalacOptions ++= List("-Ysysdef", "scala.annotation.{tailrec,implicitNotFound},scala.{deprecated,inline,transient,unchecked,volatile,Any,AnyRef,AnyVal,BigInt,BigDecimal,Boolean,Byte,Char,Double,Float,Int,Long,Nothing,PartialFunction,Product,Serializable,Short,Unit,StringContext,Option,Either,Left,Right,Some,None},java.lang._")))
 
 val catsVersion = "0.9.1-SNAPSHOT"
 
 lazy val zoo = project
   .settings(buildSettings)
   .settings(publishSettings)
-  .settings(predefSettings)
-  .settings(libraryDependencies += "org.typelevel" %% "cats" % catsVersion)
+  .settings(List(
+              scalacOptions ++= List("-Ysysdef", "scala.annotation.{tailrec,implicitNotFound},scala.{deprecated,inline,transient,unchecked,volatile,Any,AnyRef,AnyVal,BigInt,BigDecimal,Boolean,Byte,Char,Double,Float,Int,Long,Nothing,PartialFunction,Product,Serializable,Short,Unit,StringContext,Option,Either,Left,Right,Some,None},java.lang._"),
+              libraryDependencies += "org.typelevel" %% "cats" % catsVersion))
+
+lazy val `sbt-plankton` = project
+  .settings(buildSettings)
+  .settings(publishSettings)
+  .settings(List(sbtPlugin := true,
+                 scalaOrganization := "org.scala-lang",
+                 scalaVersion := "2.10.6"))
 
 lazy val docs = project
   .settings(buildSettings)
   .settings(noPublishSettings)
 
 lazy val buildSettings = Seq(
-  scalaOrganization in ThisBuild := "org.typelevel",
+  scalaOrganization := "org.typelevel",
   organization in Global := "io.github.stew",
   scalaVersion in ThisBuild := "2.12.1"
 )
@@ -55,13 +63,7 @@ lazy val noPublishSettings = Seq(
 
 lazy val plankton = project.in(file("."))
   .settings(noPublishSettings)
-  .aggregate(phyto, zoo, docs)
-
-
-lazy val predefSettings = Seq(
-  scalacOptions in Compile ++= (commonScalacOptions :+ "-Yno-predef" :+ "-Yno-imports"),
-  scalacOptions in (Test, console) ++= (commonScalacOptions ++ Seq("-Ysysdef", "-", "-Ypredef", "plankton.Phyto."))
-)
+  .aggregate(phyto, zoo, `sbt-plankton`, docs)
 
 
 
