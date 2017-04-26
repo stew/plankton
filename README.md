@@ -8,21 +8,24 @@ scala.Predef as a set of default imports.
 Quick Start
 ===========
 
+The easiest way to use plankton is to use the sbt-plugin, which will
+set your scalacOptions. Add or modify a file such as `project/plguins.sbt`:
+
+	addSbtPlugin("io.github.stew" % "sbt-plankton" % "0.0.4")
+
+Then in your project definition (usually in build.sbt), you enable the
+plugin, and select a `planktonFlavor`:
+
+	enablePlugins(PlanktonPlugin)
+	planktonFlavor := plankton.Zoo
+
+There are currently two flavors offered:
+
+- Phyto - A minimal Predef with just a safe subset of the standard Predef
+- Zoo - A Predef that also includes [Typelevel Cats](https://github.com/typelevel/cats)
+
 This feature relies on the `-Ypredef` and `-Ysysdef` scalac compiler
-flags added to [Typelevel scala](http://typelevel.org/scala/). See [this pull request](https://github.com/scala/scala/pull/5350) for more information.
+flags added to [Typelevel scala](http://typelevel.org/scala/). See
+[this pull request](https://github.com/scala/scala/pull/5350) for more
+information.
 
-You will need specify in your `build.sbt` that you want the typelevel
-compiler instead of the lightbend compiler:
-
-    scalaOrganization in ThisBuild := "org.typelevel",
-    scalaVersion in ThisBuild := "2.12.1",
-
-You will need to add plankton as a dependency:
-
-    resolvers += Resolver.bintrayRepo("stew", "plankton")
-    libraryDependencies += "stew.github.io" %% "phyto" % "0.0.1"
-	
-And you'll need to add the approriate `-Ypredef` and `-Ysysdef` options to scalac:
-
-    scalacOptions ++= Seq("-Ysysdef", "_",
-                          "-Ypredef", "plankton.Phyto._")
