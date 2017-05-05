@@ -110,10 +110,4 @@ object PlanktonPlugin extends AutoPlugin {
 
     )
   }
-
-  sourceGenerators in Compile += Def.task {
-    val file = (sourceManaged in Compile).value / "demo" / "Test.scala"
-    IO.write(file, """object Test extends App { println("Hi") }""")
-    List(file)
-  }.taskValue
 }
