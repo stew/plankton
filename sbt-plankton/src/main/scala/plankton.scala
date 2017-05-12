@@ -86,8 +86,8 @@ object PlanktonPlugin extends AutoPlugin {
       planktonFlavor := Phyto,
       resolvers += Resolver.bintrayRepo("stew", "plankton"),
       libraryDependencies ++= (planktonFlavor.value match {
-        case Phyto => List("io.github.stew" %% "phyto"     % "0.0.5")
-        case Zoo =>   List("io.github.stew" %% "zoo"       % "0.0.5",
+        case Phyto => List("io.github.stew" %% "phyto"     % plankton.BuildInfo.version)
+        case Zoo =>   List("io.github.stew" %% "zoo"       % plankton.BuildInfo.version,
                            "org.typelevel"  %% "cats-core" % "0.9.0")
       }),
       scalacOptions in Compile := (scalaOrganization.value match {

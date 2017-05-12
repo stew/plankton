@@ -3,7 +3,7 @@ lazy val phyto = project
   .settings(publishSettings)
   .settings(List(scalacOptions ++= List("-Ysysdef", "scala.annotation.{tailrec,implicitNotFound},scala.{deprecated,inline,transient,unchecked,volatile,Any,AnyRef,AnyVal,BigInt,BigDecimal,Boolean,Byte,Char,Double,Float,Int,Long,Nothing,PartialFunction,Product,Serializable,Short,Unit,StringContext,Option,Either,Left,Right,Some,None},java.lang._")))
 
-val catsVersion = "0.9.1-SNAPSHOT"
+val catsVersion = "0.9.0"
 
 lazy val zoo = project
   .settings(buildSettings)
@@ -18,6 +18,13 @@ lazy val `sbt-plankton` = project
   .settings(List(sbtPlugin := true,
                  scalaOrganization := "org.scala-lang",
                  scalaVersion := "2.10.6"))
+  .enablePlugins(BuildInfoPlugin)
+  .settings(
+  buildInfoKeys := Seq[BuildInfoKey](version),
+  buildInfoPackage := "plankton"
+)
+
+
 
 lazy val docs = project
   .settings(buildSettings)
@@ -48,7 +55,7 @@ lazy val commonScalacOptions = Seq(
 )
 
 lazy val publishSettings = Seq(
-  publishMavenStyle := true,
+  publishMavenStyle := false,
   bintrayOrganization := None,
   bintrayRepository := "plankton",
   bintrayVcsUrl := Some("git@github.com:stew/plankton.git"),
