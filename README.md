@@ -29,13 +29,25 @@ Quick Start
 The easiest way to use plankton is to use the sbt-plugin, which will
 set your scalacOptions. Add or modify a file such as `project/plguins.sbt`:
 
-	addSbtPlugin("io.github.stew" % "sbt-plankton" % "0.0.5")
+    resolvers += Resolver.url(
+      "bintray-stew",
+      url("http://dl.bintray.com/stew/plankton"))(
+      Resolver.ivyStylePatterns)
+
+    addSbtPlugin("io.github.stew" % "sbt-plankton" % "0.0.6")
 
 Then in your project definition (usually in `build.sbt`), you enable the
 plugin, and select a `planktonFlavor`:
 
+    resolvers += Resolver.url(
+      "bintray-stew",
+      url("http://dl.bintray.com/stew/plankton"))(
+      Resolver.ivyStylePatterns)
+
 	enablePlugins(PlanktonPlugin)
 	planktonFlavor := plankton.Zoo
+
+If I had more sbt-fu, I'd get rid of this "resolvers += crap"
 
 There are currently two flavors offered:
 
