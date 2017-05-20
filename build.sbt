@@ -1,3 +1,5 @@
+organization in ThisBuild := "io.github.stew"
+
 lazy val phyto = project
   .settings(buildSettings)
   .settings(publishSettings)
@@ -17,7 +19,8 @@ lazy val `sbt-plankton` = project
   .settings(publishSettings)
   .settings(List(sbtPlugin := true,
                  scalaOrganization := "org.scala-lang",
-                 scalaVersion := "2.10.6"))
+                 scalaVersion := "2.10.6",
+                 crossScalaVersions := Seq("2.10.6")))
   .enablePlugins(BuildInfoPlugin)
   .settings(
   buildInfoKeys := Seq[BuildInfoKey](version),
@@ -32,8 +35,9 @@ lazy val docs = project
 
 lazy val buildSettings = Seq(
   scalaOrganization := "org.typelevel",
-  organization in Global := "io.github.stew",
-  scalaVersion in ThisBuild := "2.12.1"
+  scalaVersion := "2.12.2-bin-typelevel-4",
+  crossScalaVersions := Seq("2.12.2-bin-typelevel-4", "2.11.11-bin-typelevel-4")
+    
 )
 
 lazy val commonScalacOptions = Seq(
@@ -54,13 +58,34 @@ lazy val commonScalacOptions = Seq(
   "-Xfuture"
 )
 
+import ReleaseTransformations._
+
+
 lazy val publishSettings = Seq(
   publishMavenStyle := false,
   bintrayOrganization := None,
   bintrayRepository := "plankton",
   bintrayVcsUrl := Some("git@github.com:stew/plankton.git"),
-  licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html"))
+  licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html")),
+
+  releaseCrossBuild := false,
+  releaseProcess := Seq[ReleaseStep](
+    checkSnapshotDependencies,
+    inquireVersions,
+    runClean,
+    releaseStepCommandAndRemaining("so test"),
+    setReleaseVersion,
+    commitReleaseVersion,
+    tagRelease,
+    releaseStepCommandAndRemaining("so publish"),
+    setNextVersion,
+    commitNextVersion,
+    pushChanges
+  )
+
 )
+
+
 
 lazy val noPublishSettings = Seq(
   publish := (),
