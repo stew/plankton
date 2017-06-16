@@ -3,18 +3,7 @@ package plankton
 import sbt._, Keys._
 import scala.collection.immutable.List
 
-trait Kingdom
-case object Phyto extends Kingdom
-case object Zoo extends Kingdom
-
-object PlanktonPlugin extends AutoPlugin {
-
-  object autoImport {
-    val planktonFlavor = SettingKey[Kingdom]("plankton-flavor")
-  }
-
-  import autoImport._
-
+trait PlanktonCommon {
   val commonFlags = Seq(
     "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
     "-encoding", "utf-8",                // Specify character encoding used by source files.
@@ -57,6 +46,15 @@ object PlanktonPlugin extends AutoPlugin {
     "-Xmax-classfile-name", (255 - 15).toString // Leave some room for codecov and friends
     )
 
+  val typelevelOnlyFlags = Seq(
+    "-Yinduction-heuristics",            // speedd up the compilation of inductive implicit resolution
+    "-Ykind-polymorphism",               // https://github.com/typelevel/scala/blob/typelevel-readme/notes/2.12.1.md#minimal-kind-polymorphism-pull5538-mandubian
+    "-Yliteral-types",                   // Literals can now appear in type position (!!)
+    "-Xstrict-patmat-analysis",          // providemore accurate reporting of failures of match exhaustivity for patterns with guards or extractors
+
+    "-Ywarn-unused-import"               // Until TLS gets the above 'warn-unused:whatever' flags from the LBS section above
+  )
+
   val lightbendOnlyFlags = Seq(
     "-Ywarn-extra-implicit",             // Warn when more than one implicit parameter section is defined.
     "-Ywarn-unused:implicits",           // Warn if an implicit parameter is unused.
@@ -67,40 +65,20 @@ object PlanktonPlugin extends AutoPlugin {
     "-Ywarn-unused:privates"             // Warn if a private member is unused.
     )
 
-  val typelevelOnlyFlags = Seq(
-    // see https://github.com/typelevel/scala/blob/typelevel-readme/notes/2.12.1.md
-
-    "-Yinduction-heuristics",            // speedd up the compilation of inductive implicit resolution
-    "-Ykind-polymorphism",               // https://github.com/typelevel/scala/blob/typelevel-readme/notes/2.12.1.md#minimal-kind-polymorphism-pull5538-mandubian
-    "-Yliteral-types",                   // Literals can now appear in type position (!!)
-    "-Xstrict-patmat-analysis",          // providemore accurate reporting of failures of match exhaustivity for patterns with guards or extractors
-
-    "-Ywarn-unused-import"               // Until TLS gets the above 'warn-unused:whatever' flags from the LBS section above
-  )
-
-  override def projectSettings = {
     val commonSysdef = "scala.annotation.{tailrec,implicitNotFound},scala.{deprecated,inline,transient,unchecked,volatile,Any,AnyRef,AnyVal,BigInt,BigDecimal,Boolean,Byte,Char,Double,Float,Int,Long,Nothing,PartialFunction,Product,Serializable,Short,Unit,StringContext,Option,Either,Left,Right,Some,None},java.lang.String,scala.collection.immutable._"
 
-    val catsSysdef = ", cats._, cats.data._, cats.arrow._, cats.functor._, cats.implicits._"
+}
+
+object PhytoPlankton extends AutoPlugin with PlanktonCommon {
+  override def projectSettings = {
+
     List(
-      planktonFlavor := Phyto,
       resolvers += Resolver.bintrayRepo("stew", "plankton"),
-      libraryDependencies ++= (planktonFlavor.value match {
-        case Phyto => List("io.github.stew" %% "phyto"     % plankton.BuildInfo.version)
-        case Zoo =>   List("io.github.stew" %% "zoo"       % plankton.BuildInfo.version,
-                           "org.typelevel"  %% "cats-core" % "0.9.0")
-      }),
+      libraryDependencies += "io.github.stew" %% "phyto" % plankton.BuildInfo.version,
       scalacOptions in Compile := (scalaOrganization.value match {
         case "org.typelevel" => commonFlags ++ typelevelOnlyFlags
         case _               => commonFlags ++ lightbendOnlyFlags
-      }) ++ ({
-        planktonFlavor.value match {
-          case Phyto =>
-            List("-Ysysdef", commonSysdef, "-Ypredef", "plankton.Phyto._")
-          case Zoo =>
-            List("-Ysysdef", commonSysdef + catsSysdef, "-Ypredef", "plankton.Zoo._")
-        }
-      }),
+      }) ++ List("-Ysysdef", commonSysdef, "-Ypredef", "plankton.Phyto._"),
 
       scalacOptions in (Compile, console) ~= (
         _.filterNot(Set("-Ywarn-unused:imports",
@@ -108,4 +86,28 @@ object PlanktonPlugin extends AutoPlugin {
       )
     )
   }
+}
+
+object ZooPlankton extends AutoPlugin with PlanktonCommon {
+  override def projectSettings = {
+    val catsSysdef = ", cats._, cats.data._, cats.arrow._, cats.functor._, cats.implicits._"
+    List(
+      resolvers += Resolver.bintrayRepo("stew", "plankton"),
+      libraryDependencies ++= List("io.github.stew" %% "zoo"       % plankton.BuildInfo.version,
+                                   "org.typelevel"  %% "cats-core" % "0.9.0"),
+
+
+      scalacOptions in Compile := (scalaOrganization.value match {
+        case "org.typelevel" => commonFlags ++ typelevelOnlyFlags
+        case _               => commonFlags ++ lightbendOnlyFlags
+      }) ++ List("-Ysysdef", commonSysdef + catsSysdef, "-Ypredef", "plankton.Zoo._"),
+
+
+      scalacOptions in (Compile, console) ~= (
+        _.filterNot(Set("-Ywarn-unused:imports",
+                        "-Xfatal-warnings"))
+      )
+    )
+  }
+
 }

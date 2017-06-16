@@ -34,7 +34,7 @@ set your scalacOptions. Add or modify a file such as `project/plguins.sbt`:
       url("http://dl.bintray.com/stew/plankton"))(
       Resolver.ivyStylePatterns)
 
-    addSbtPlugin("io.github.stew" % "sbt-plankton" % "0.0.6")
+    addSbtPlugin("io.github.stew" % "sbt-plankton" % "0.0.7")
 
 Then in your project definition (usually in `build.sbt`), you enable the
 plugin, and select a `planktonFlavor`:
@@ -44,10 +44,10 @@ plugin, and select a `planktonFlavor`:
       url("http://dl.bintray.com/stew/plankton"))(
       Resolver.ivyStylePatterns)
 
-	enablePlugins(PlanktonPlugin)
-	planktonFlavor := plankton.Zoo
+	enablePlugins(ZooPlankton)
 
-If I had more sbt-fu, I'd get rid of this "resolvers += crap"
+If I had more sbt-fu, I'd get rid of this "resolvers += crap", perhaps
+once I move this to sonatype.
 
 There are currently two flavors offered:
 
