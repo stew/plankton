@@ -96,7 +96,10 @@ object ZooPlankton extends AutoPlugin with PlanktonCommon {
   override def projectSettings = {
     val catsSysdef = ", cats._, cats.data._, cats.arrow._, cats.functor._, cats.implicits._"
     List(
-      resolvers += Resolver.bintrayRepo("stew", "plankton"),
+      resolvers += Resolver.url(
+        "bintray-stew",
+        url("http://dl.bintray.com/stew/plankton"))(
+        Resolver.ivyStylePatterns),
       libraryDependencies ++= List("io.github.stew" %% "zoo"       % plankton.BuildInfo.version,
                                    "org.typelevel"  %% "cats-core" % "0.9.0"),
 
