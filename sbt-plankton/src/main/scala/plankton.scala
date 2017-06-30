@@ -73,7 +73,11 @@ object PhytoPlankton extends AutoPlugin with PlanktonCommon {
   override def projectSettings = {
 
     List(
-      resolvers += Resolver.bintrayRepo("stew", "plankton"),
+
+      resolvers += Resolver.url(
+        "bintray-stew",
+        url("http://dl.bintray.com/stew/plankton"))(
+        Resolver.ivyStylePatterns),
       libraryDependencies += "io.github.stew" %% "phyto" % plankton.BuildInfo.version,
       scalacOptions in Compile := (scalaOrganization.value match {
         case "org.typelevel" => commonFlags ++ typelevelOnlyFlags
