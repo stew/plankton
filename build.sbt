@@ -5,14 +5,14 @@ lazy val phyto = project
   .settings(publishSettings)
   .settings(List(scalacOptions ++= List("-Ysysdef", "scala.annotation.{tailrec,implicitNotFound},scala.{deprecated,inline,transient,unchecked,volatile,Any,AnyRef,AnyVal,BigInt,BigDecimal,Boolean,Byte,Char,Double,Float,Int,Long,Nothing,PartialFunction,Product,Serializable,Short,Unit,StringContext,Option,Either,Left,Right,Some,None},java.lang._")))
 
-val catsVersion = "0.9.0"
+val catsVersion = "1.0.0-MF"
 
 lazy val zoo = project
   .settings(buildSettings)
   .settings(publishSettings)
   .settings(List(
               scalacOptions ++= List("-Ysysdef", "scala.annotation.{tailrec,implicitNotFound},scala.{deprecated,inline,transient,unchecked,volatile,Any,AnyRef,AnyVal,BigInt,BigDecimal,Boolean,Byte,Char,Double,Float,Int,Long,Nothing,PartialFunction,Product,Serializable,Short,Unit,StringContext,Option,Either,Left,Right,Some,None},java.lang._"),
-              libraryDependencies += "org.typelevel" %% "cats" % catsVersion))
+              libraryDependencies += "org.typelevel" %% "cats-core" % catsVersion))
 
 lazy val `sbt-plankton` = project
   .settings(buildSettings)
@@ -35,9 +35,9 @@ lazy val docs = project
 
 lazy val buildSettings = Seq(
   scalaOrganization := "org.typelevel",
-  scalaVersion := "2.12.2-bin-typelevel-4",
-  crossScalaVersions := Seq("2.12.2-bin-typelevel-4", "2.11.11-bin-typelevel-4")
-    
+  scalaVersion := "2.12.3-bin-typelevel-4",
+  crossScalaVersions := Seq("2.12.3-bin-typelevel-4", "2.11.11-bin-typelevel-4")
+
 )
 
 lazy val commonScalacOptions = Seq(
@@ -96,6 +96,3 @@ lazy val noPublishSettings = Seq(
 lazy val plankton = project.in(file("."))
   .settings(noPublishSettings)
   .aggregate(phyto, zoo, `sbt-plankton`, docs)
-
-
-
