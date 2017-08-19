@@ -101,7 +101,7 @@ object ZooPlankton extends AutoPlugin with PlanktonCommon {
         url("http://dl.bintray.com/stew/plankton"))(
         Resolver.ivyStylePatterns),
       libraryDependencies ++= List("io.github.stew" %% "zoo"       % plankton.BuildInfo.version,
-                                   "org.typelevel"  %% "cats-core" % "0.9.0"),
+                                   "org.typelevel"  %% "cats-core" % "1.0.0-MF"),
 
 
       scalacOptions in Compile := (scalaOrganization.value match {
